@@ -1,102 +1,194 @@
+/* Comportamiento general del sitio: cabecera, menú móvil, estado "abierto ahora",
+   WhatsApp, reservas, mapa y animaciones. Los datos del negocio están en js/config.js. */
 (() => {
+  "use strict";
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
-  const esc = t => t.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const esc = t => String(t).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const C = typeof CONFIG !== "undefined" ? CONFIG : null;
+  const pad = n => String(n).padStart(2, "0");
 
-  /* 1. Navbar: transparente a sólido */
-  const nav = $("#navbar");
-  const onScroll = () => nav.classList.toggle("scrolled", scrollY > 80);
+  /* ---------- Utilidades de hora (siempre en la zona horaria del restaurante) ---------- */
+  const limaNow = () => {
+    const p = Object.fromEntries(new Intl.DateTimeFormat("en-CA", {
+      timeZone: C.tz, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).formatToParts(new Date()).map(x => [x.type, x.value]));
+    return { date: `${p.year}-${p.month}-${p.day}`, minutes: +p.hour * 60 + +p.minute };
+  };
+  const time12 = m => { const h = Math.floor(m / 60); return `${((h + 11) % 12) + 1}:${pad(m % 60)} ${h < 12 ? "AM" : "PM"}`; };
+  const addDays = (iso, n) => { const [y, m, d] = iso.split("-").map(Number); return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10); };
+
+  /* ---------- 1. WhatsApp y teléfono desde config.js ---------- */
+  if (C) {
+    $$("[data-wa]").forEach(a => {
+      const msg = a.dataset.wa;
+      a.href = `https://wa.me/${C.phone}` + (msg ? `?text=${encodeURIComponent(msg)}` : "");
+    });
+    if (C.phoneLabel) $$("[data-phone]").forEach(el => { el.textContent = C.phoneLabel; });
+  }
+
+  /* ---------- 2. Estado: abierto / cierra pronto / cerrado ---------- */
+  if (C) {
+    const updateStatus = () => {
+      const m = limaNow().minutes, open = C.open * 60, close = C.close * 60;
+      let cls = "", text;
+      if (m >= open && m < close) {
+        const soon = close - m <= 60;
+        cls = soon ? "is-soon" : "is-open";
+        text = `${soon ? "Cierra pronto" : "Abierto ahora"} · hasta las ${time12(close)}`;
+      } else {
+        text = `Cerrado ahora · abrimos ${m < open ? "hoy" : "mañana"} a las ${time12(open)}`;
+      }
+      $$(".status").forEach(el => {
+        el.classList.remove("is-open", "is-soon");
+        if (cls) el.classList.add(cls);
+        const t = $(".status__text", el);
+        if (t) t.textContent = text;
+      });
+    };
+    updateStatus();
+    setInterval(updateStatus, 60000);
+  }
+
+  /* ---------- 3. Scroll: cabecera, barra de progreso, barra móvil y botón "arriba" ---------- */
+  const header = $("#header"), progress = $("#progress"), dock = $("#dock"), toTop = $("#to-top");
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
+      if (header) header.classList.toggle("is-scrolled", y > 40 || header.classList.contains("header--solid"));
+      if (progress) progress.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+      if (dock) dock.classList.toggle("is-visible", y > 480);
+      if (toTop) toTop.hidden = y < 900;
+      ticking = false;
+    });
+  };
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+  if (toTop) toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }));
 
-  /* 2. Menú móvil (accesible, cierra con Escape) */
-  const toggle = $("#menu-toggle"), mobile = $("#mobile-menu");
-  const setMenu = open => {
-    mobile.classList.toggle("open", open);
-    mobile.setAttribute("aria-hidden", !open);
-    toggle.setAttribute("aria-expanded", open);
-    toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
-    toggle.innerHTML = `<i class="fas fa-${open ? "times" : "bars"}"></i>`;
-    document.body.classList.toggle("no-scroll", open);
-  };
-  toggle.addEventListener("click", () => setMenu(!mobile.classList.contains("open")));
-  $$("a", mobile).forEach(a => a.addEventListener("click", () => setMenu(false)));
-  addEventListener("keydown", e => e.key === "Escape" && setMenu(false));
+  /* ---------- 4. Menú móvil (accesible: foco atrapado, Escape, resto de la página inactiva) ---------- */
+  const burger = $("#burger"), drawer = $("#drawer");
+  if (burger && drawer) {
+    const behind = $$("main, footer, #dock, .fab, #to-top");
+    const setMenu = (open, returnFocus = false) => {
+      drawer.classList.toggle("is-open", open);
+      document.body.classList.toggle("menu-open", open);
+      burger.setAttribute("aria-expanded", open);
+      burger.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      behind.forEach(el => { el.inert = open; });
+      if (open) requestAnimationFrame(() => { const first = $("a", drawer); if (first) first.focus(); });
+      else if (returnFocus) burger.focus();
+    };
+    burger.addEventListener("click", () => setMenu(!drawer.classList.contains("is-open"), true));
+    $$("a", drawer).forEach(a => a.addEventListener("click", () => setMenu(false)));
+    matchMedia("(min-width: 1024px)").addEventListener("change", e => { if (e.matches) setMenu(false); });
+    document.addEventListener("keydown", e => {
+      if (!drawer.classList.contains("is-open")) return;
+      if (e.key === "Escape") { setMenu(false, true); return; }
+      if (e.key !== "Tab") return;
+      const f = [...$$("#header a, #header button"), ...$$("a[href], button", drawer)].filter(el => el.getClientRects().length);
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  }
 
-  /* 3. Carta tipo libro: portada, índice, páginas con imagen referencial y contraportada */
-  const tabs = $("#tabs"), panels = $("#panels"), prev = $("#prev"), next = $("#next"), count = $("#pagina"), bar = $("#progreso");
-  const COVER = "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=900&q=75";
-  const isStar = n => ESTRELLA.includes(n);
-  const itemHTML = ([n, p, note]) => `<div class="item${isStar(n) ? " item--star" : ""}"><div><h4>${isStar(n) ? '<i class="fas fa-star star" title="Plato estrella"></i>' : ""}${esc(n)}</h4>${note ? `<p>${esc(note)}</p>` : ""}</div><span class="leader"></span><span class="price">S/ ${p.toFixed(2)}</span></div>`;
-  const fig = (src, alt, cap) => `<figure class="spread__img"><img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" onerror="this.parentNode.classList.add('noimg');this.remove()"><figcaption>${cap}</figcaption></figure>`;
+  /* ---------- 5. Aparición al hacer scroll (una sola vez; luego se limpia la clase) ---------- */
+  const reveals = $$(".reveal");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries, o) => entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      const el = en.target;
+      el.classList.add("is-in");
+      o.unobserve(el);
+      const delay = (parseFloat(getComputedStyle(el).getPropertyValue("--d")) || 0) * 90;
+      setTimeout(() => el.classList.remove("reveal", "is-in"), 1100 + delay);
+    }), { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    reveals.forEach(el => io.observe(el));
+  } else {
+    reveals.forEach(el => el.classList.add("is-in"));
+  }
 
-  const spreads = [{ type: "cover" }, { type: "toc" }], first = {};
-  MENU.forEach((cat, ci) => {
-    const parts = Math.ceil(cat.items.length / 7), per = Math.ceil(cat.items.length / parts);
-    first[ci] = spreads.length;
-    for (let k = 0; k < parts; k++) spreads.push({ type: "page", cat, ci, k, parts, items: cat.items.slice(k * per, (k + 1) * per) });
-  });
-  spreads.push({ type: "end" });
-  MENU.forEach((cat, ci) => tabs.insertAdjacentHTML("beforeend", `<button class="tab" data-i="${first[ci]}">${esc(cat.title)}</button>`));
+  /* ---------- 6. Enlace activo según la sección visible ---------- */
+  const links = $$(".nav a");
+  if (links.length && "IntersectionObserver" in window) {
+    const spy = new IntersectionObserver(entries => entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      links.forEach(a => {
+        const on = a.getAttribute("href") === "#" + en.target.id;
+        a.classList.toggle("is-current", on);
+        if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+      });
+    }), { rootMargin: "-45% 0px -50% 0px" });
+    ["inicio", "nosotros", "estrella", "carta", "reservas", "contacto"].forEach(id => { const s = document.getElementById(id); if (s) spy.observe(s); });
+  }
 
-  const render = s => {
-    if (s.type === "cover") return `<article class="spread cover">${fig(COVER, "Pepe Cangrejo", "<span>Cocina marina peruana</span><strong>Pepe Cangrejo</strong>")}
-      <div class="spread__list center-page"><i class="fas fa-anchor emblem"></i><span class="eyebrow">Ancón · Lima</span><h3 class="book-title">La Carta</h3><div class="orn">◆</div>
-      <p class="lead">Tradición y sabor del mar, plato por plato.</p><button class="btn btn--solid" data-go="1">Abrir la carta</button></div></article>`;
-    if (s.type === "toc") return `<article class="spread">${fig(MENU[0].img, "Pulpa de cangrejo", "<span>Contenido</span><strong>Índice</strong>")}
-      <div class="spread__list"><h3 class="tag">Índice</h3><ol class="toc">${MENU.map((c, ci) => `<li><button data-go="${first[ci]}"><span class="toc__n">${String(ci + 1).padStart(2, "0")}</span><span class="toc__t">${esc(c.title)}</span><span class="leader"></span><span class="toc__p">${first[ci] + 1}</span></button></li>`).join("")}</ol>
-      <p class="spread__note"><i class="fas fa-star star"></i> Plato estrella de la casa</p></div></article>`;
-    if (s.type === "end") return `<article class="spread cover">${fig(COVER, "Pepe Cangrejo", "<span>Gracias por visitarnos</span><strong>Pepe Cangrejo</strong>")}
-      <div class="spread__list center-page"><i class="fas fa-heart emblem"></i><h3 class="book-title">¡Buen provecho!</h3><div class="orn">◆</div>
-      <p class="lead">Reserva tu mesa o haz tu pedido por WhatsApp.</p>
-      <a class="btn btn--solid" target="_blank" rel="noopener" href="https://wa.me/${CONFIG.phone}?text=Hola%20Pepe%20Cangrejo,%20quisiera%20hacer%20un%20pedido"><i class="fab fa-whatsapp"></i> Pedir por WhatsApp</a>
-      <p class="spread__note">Lun - Dom · ${CONFIG.open}:00 AM - ${CONFIG.close - 12}:00 PM</p></div></article>`;
-    const c = s.cat;
-    return `<article class="spread">${fig(c.img, "Imagen referencial de " + c.title, `<span>Nº ${String(s.ci + 1).padStart(2, "0")}</span><strong>${esc(c.title)}</strong>${s.parts > 1 ? `<em>Parte ${s.k + 1} de ${s.parts}</em>` : ""}`)}
-      <div class="spread__list"><h3 class="tag">${esc(c.title)}</h3><p class="sub">${esc(c.sub || "")}</p><div class="spread__items">${s.items.map(itemHTML).join("")}</div><p class="spread__note">Imagen referencial</p></div></article>`;
-  };
+  /* ---------- 7. Reservas → mensaje de WhatsApp ---------- */
+  const form = $("#reserva-form");
+  if (form && C) {
+    const f = form.elements, msg = $("#reserva-msg");
 
-  let cur = -1;
-  const show = (i, dir = 1) => {
-    i = Math.max(0, Math.min(spreads.length - 1, i));
-    if (i === cur) return;
-    const s = spreads[i];
-    panels.innerHTML = render(s);
-    panels.firstElementChild.classList.add(dir > 0 ? "turn-next" : "turn-prev");
-    cur = i;
-    $$(".tab", tabs).forEach(b => { const on = s.ci !== undefined && +b.dataset.i === first[s.ci]; b.classList.toggle("on", on); b.setAttribute("aria-current", on); });
-    count.textContent = `Página ${i + 1} de ${spreads.length} · ${s.type === "cover" ? "Portada" : s.type === "toc" ? "Índice" : s.type === "end" ? "Última página" : s.cat.title}`;
-    bar.style.width = ((i + 1) / spreads.length * 100) + "%";
-    prev.disabled = i === 0; next.disabled = i === spreads.length - 1;
-  };
-  const go = t => show(t, t >= cur ? 1 : -1);
-  $$(".tab", tabs).forEach(b => b.addEventListener("click", () => go(+b.dataset.i)));
-  panels.addEventListener("click", e => { const g = e.target.closest("[data-go]"); if (g) go(+g.dataset.go); });
-  prev.addEventListener("click", () => show(cur - 1, -1));
-  next.addEventListener("click", () => show(cur + 1, 1));
-  panels.addEventListener("keydown", e => { if (e.key === "ArrowRight") show(cur + 1, 1); if (e.key === "ArrowLeft") show(cur - 1, -1); });
-  let x0 = null;
-  panels.addEventListener("touchstart", e => x0 = e.touches[0].clientX, { passive: true });
-  panels.addEventListener("touchend", e => {
-    if (x0 === null) return;
-    const dx = e.changedTouches[0].clientX - x0; x0 = null;
-    if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
-  });
-  show(0);
+    // Horas disponibles según el día: dentro del horario y, si es hoy, con anticipación mínima
+    const slotsFor = iso => {
+      const now = limaNow(), out = [];
+      const first = C.open * 60, last = C.close * 60 - C.lastBookingBeforeClose;
+      for (let m = first; m <= last; m += C.slotMinutes) {
+        if (iso !== now.date || m >= now.minutes + C.minLeadMinutes) out.push(m);
+      }
+      return out;
+    };
+    const fillSlots = () => {
+      const keep = f.hora.value, slots = slotsFor(f.fecha.value);
+      f.hora.innerHTML = slots.length
+        ? slots.map(m => `<option value="${time12(m)}">${time12(m)}</option>`).join("")
+        : '<option value="">Sin horarios disponibles hoy: elige otra fecha</option>';
+      if (!slots.length) return;
+      const wanted = [...f.hora.options].find(o => o.value === keep) || [...f.hora.options].find(o => o.value === "1:00 PM");
+      if (wanted) f.hora.value = wanted.value;
+    };
 
-  /* 4. Scroll reveal (se anima una sola vez) */
-  const io = new IntersectionObserver((entries, o) => entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add("active"); o.unobserve(e.target); }
-  }), { threshold: 0.15 });
-  $$(".reveal").forEach(el => io.observe(el));
+    const today = limaNow().date;
+    f.fecha.min = today;
+    f.fecha.max = addDays(today, C.bookDaysAhead);
+    f.fecha.value = slotsFor(today).length ? today : addDays(today, 1);
+    fillSlots();
+    f.fecha.addEventListener("change", fillSlots);
 
-  /* 5. Enlace activo según la sección visible */
-  const links = $$('.nav__links a');
-  const spy = new IntersectionObserver(entries => entries.forEach(e => {
-    if (e.isIntersecting) links.forEach(a => a.classList.toggle("current", a.getAttribute("href") === "#" + e.target.id));
-  }), { rootMargin: "-45% 0px -50% 0px" });
-  $$("main section[id]").forEach(s => spy.observe(s));
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const d = Object.fromEntries(new FormData(form));
+      const [y, m, dd] = d.fecha.split("-").map(Number);
+      let fecha = new Intl.DateTimeFormat("es-PE", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(y, m - 1, dd)));
+      fecha = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+      const nombre = d.nombre.trim(), notas = d.notas.trim();
+      const text = `Hola ${C.name}, quisiera reservar una mesa:\n• Nombre: ${nombre}\n• Personas: ${d.personas}\n• Fecha: ${fecha}\n• Hora: ${d.hora}` + (notas ? `\n• Comentarios: ${notas}` : "");
+      const url = `https://wa.me/${C.phone}?text=${encodeURIComponent(text)}`;
+      const w = window.open(url, "_blank");
+      if (w) w.opener = null;
+      msg.hidden = false;
+      msg.innerHTML = `Listo, <strong>${esc(nombre)}</strong>: te llevamos a WhatsApp con tu reserva. Si no se abrió, <a href="${esc(url)}" target="_blank" rel="noopener">pulsa aquí</a>. Tu mesa queda confirmada cuando te respondamos en ese chat.`;
+    });
+  }
 
-  /* 6. Año automático en el footer */
-  $("#year").textContent = new Date().getFullYear();
+  /* ---------- 8. Mapa: se carga solo si el visitante lo pide (más rápido y más privado) ---------- */
+  const mapBtn = $("#map-load"), stage = $("#map-stage");
+  if (mapBtn && stage) {
+    mapBtn.addEventListener("click", () => {
+      const frame = document.createElement("iframe");
+      frame.title = "Mapa de Pepe Cangrejo en Ancón";
+      frame.loading = "lazy";
+      frame.allowFullscreen = true;
+      frame.referrerPolicy = "no-referrer-when-downgrade";
+      frame.src = stage.dataset.src;
+      stage.replaceChildren(frame);
+    });
+  }
+
+  /* ---------- 9. Año automático en el pie ---------- */
+  const year = $("#year");
+  if (year) year.textContent = new Date().getFullYear();
 })();

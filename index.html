@@ -1,193 +1,444 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-PE">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pepe Cangrejo | Alta Cocina Marina en Ancón</title>
-  <meta name="description" content="Restaurante de cocina marina en Ancón, Lima. Especialistas en pulpa de cangrejo, ceviches y pesca del día. Reservas y pedidos por WhatsApp.">
-  <meta name="theme-color" content="#a8232a">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E🦀%3C/text%3E%3C/svg%3E">
-  <meta property="og:title" content="Pepe Cangrejo | Alta Cocina Marina">
-  <meta property="og:description" content="Tradición y sabor del mar peruano en Ancón, Lima.">
-  <meta property="og:type" content="restaurant">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=1200&q=80">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Pepe Cangrejo | Cocina Marina Peruana en Ancón, Lima</title>
+  <meta name="description" content="Restaurante de cocina marina peruana en Ancón, Lima. Especialistas en pulpa de cangrejo, ceviches y pesca del día. Reservas y pedidos por WhatsApp.">
+  <meta name="theme-color" content="#1c0f10">
+  <meta name="color-scheme" content="light">
+
+  <!-- Iconos -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+
+  <!-- Al compartir el enlace (WhatsApp, Facebook, etc.).
+       Cuando tengas dominio propio: cambia la URL de og:image/twitter:image por la tuya
+       y añade <link rel="canonical"> y <meta property="og:url"> (ver README). -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Pepe Cangrejo">
+  <meta property="og:locale" content="es_PE">
+  <meta property="og:title" content="Pepe Cangrejo | Cocina Marina Peruana en Ancón">
+  <meta property="og:description" content="Especialistas en pulpa de cangrejo, ceviches y pesca del día. Reserva tu mesa por WhatsApp.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/roosevelt-glitch/PepeCangrejoRestaurante/main/img/og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Pepe Cangrejo, cocina marina peruana en Ancón">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/roosevelt-glitch/PepeCangrejoRestaurante/main/img/og-cover.jpg">
+
+  <!-- Rendimiento: fuentes propias (sin Google Fonts) e imágenes desde Unsplash -->
+  <link rel="preload" href="fonts/jost-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/cormorant-garamond-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/cormorant-garamond-latin-wght-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
   <script>document.documentElement.classList.add('js')</script>
+
+  <!-- Datos estructurados para Google. La carta (hasMenu) la completa js/carta.js a partir de menu-data.js -->
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Restaurant","name":"Pepe Cangrejo","servesCuisine":"Peruana, Mariscos","telephone":"+51957816255","priceRange":"S/ 25 - S/ 100","sameAs":["https://www.facebook.com/restaurantepepecangrejo/?locale=es_LA","https://www.instagram.com/pepecangrejoperu/?hl=es","https://www.tiktok.com/@pepecangrejoperu"],"address":{"@type":"PostalAddress","streetAddress":"2 de Mayo 601","addressLocality":"Ancón","postalCode":"15123","addressCountry":"PE"},"openingHours":"Mo-Su 11:00-18:00"}
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Pepe Cangrejo",
+    "description": "Cocina marina peruana en Ancón, Lima. Especialistas en pulpa de cangrejo, ceviches y pesca del día.",
+    "servesCuisine": ["Peruana", "Mariscos", "Cangrejo"],
+    "priceRange": "S/ 25 - S/ 100",
+    "telephone": "+51957816255",
+    "acceptsReservations": true,
+    "image": "https://raw.githubusercontent.com/roosevelt-glitch/PepeCangrejoRestaurante/main/img/og-cover.jpg",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "2 de Mayo 601",
+      "addressLocality": "Ancón",
+      "addressRegion": "Lima",
+      "postalCode": "15123",
+      "addressCountry": "PE"
+    },
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "11:00",
+      "closes": "18:00"
+    }],
+    "sameAs": [
+      "https://www.facebook.com/restaurantepepecangrejo/?locale=es_LA",
+      "https://www.instagram.com/pepecangrejoperu/?hl=es",
+      "https://www.tiktok.com/@pepecangrejoperu"
+    ]
+  }
   </script>
 </head>
 <body>
-  <a class="skip" href="#carta">Saltar a la carta</a>
+  <a class="skip" href="#contenido">Saltar al contenido</a>
 
-  <nav id="navbar" class="nav" aria-label="Principal">
-    <div class="container nav__inner">
+  <!-- ============ CABECERA ============ -->
+  <header class="header" id="header">
+    <div class="container header__bar">
       <a href="#inicio" class="logo">Pepe <span>Cangrejo</span></a>
-      <div class="nav__links">
+      <nav class="nav" aria-label="Principal">
         <a href="#nosotros">Nosotros</a>
-        <a href="#experiencia">Experiencia</a>
         <a href="#carta">La Carta</a>
         <a href="#reservas">Reservas</a>
         <a href="#contacto">Contacto</a>
-      </div>
-      <button id="menu-toggle" class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu"><i class="fas fa-bars"></i></button>
+      </nav>
+      <a href="#reservas" class="btn btn--sm header__cta">Reservar mesa</a>
+      <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Abrir menú">
+        <svg class="i i-open" aria-hidden="true"><use href="#i-menu"/></svg>
+        <svg class="i i-close" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
     </div>
-    <div id="mobile-menu" class="mobile" aria-hidden="true">
-      <a href="#nosotros">Nosotros</a>
-      <a href="#experiencia">Experiencia</a>
-      <a href="#carta">La Carta</a>
-      <a href="#reservas">Reservas</a>
-        <a href="#contacto">Contacto</a>
-    </div>
-  </nav>
-
-  <header id="inicio" class="hero">
-    <div class="hero__content reveal active">
-      <p class="status" role="status"><span>Horario 11:00 AM - 6:00 PM</span></p>
-      <span class="eyebrow">Tradición y Sabor del Mar</span>
-      <h1>Pepe <span>Cangrejo</span></h1>
-      <p>Una experiencia culinaria inigualable donde los tesoros del océano cobran vida.</p>
-      <div class="actions">
-        <a href="#reservas" class="btn btn--solid">Reservar mesa</a>
-        <a href="#carta" class="btn btn--outline">Descubrir la Carta</a>
-      </div>
-    </div>
+    <div class="progress" aria-hidden="true"><span id="progress"></span></div>
   </header>
 
-  <main>
-    <section class="features" aria-label="Por qué elegirnos">
-      <div class="container features__grid">
-        <article class="feature reveal"><i class="fas fa-fish"></i><h3>Pesca del día</h3><p>Pescados y mariscos seleccionados cada mañana para la preparación del día.</p></article>
-        <article class="feature reveal reveal-1"><i class="fas fa-utensils"></i><h3>Especialistas en cangrejo</h3><p>Una línea completa de platos con pulpa de cangrejo: causas, chupes, tequeños y más.</p></article>
-        <article class="feature reveal reveal-2"><i class="fas fa-users"></i><h3>Tradición familiar</h3><p>Años de experiencia combinados con técnicas culinarias de vanguardia.</p></article>
-        <article class="feature reveal reveal-2"><i class="fab fa-whatsapp"></i><h3>Pedidos por WhatsApp</h3><p>Reserva tu mesa o haz tu pedido en segundos, sin llamadas ni esperas.</p></article>
+  <!-- Menú móvil -->
+  <div class="drawer" id="drawer">
+    <nav aria-label="Menú móvil">
+      <a href="#nosotros">Nosotros</a>
+      <a href="#carta">La Carta</a>
+      <a href="#reservas">Reservas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="drawer__foot">
+      <p class="status"><span class="status__text">Todos los días · 11:00 AM – 6:00 PM</span></p>
+      <a class="btn" data-wa="Hola Pepe Cangrejo, quisiera hacer un pedido" target="_blank" rel="noopener" href="https://wa.me/51957816255?text=Hola%20Pepe%20Cangrejo%2C%20quisiera%20hacer%20un%20pedido">
+        <svg class="i i--fill" aria-hidden="true"><use href="#i-whatsapp"/></svg> Pedir por WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <main id="contenido">
+
+    <!-- ============ HERO ============ -->
+    <section id="inicio" class="hero" aria-labelledby="titulo-principal">
+      <img class="hero__bg" alt="" width="1920" height="1280" fetchpriority="high" decoding="async"
+           src="https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=1280&q=70"
+           srcset="https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=800&q=70 800w,
+                   https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=1280&q=70 1280w,
+                   https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=1920&q=70 1920w"
+           sizes="100vw">
+      <div class="hero__content">
+        <p class="status status--pill" style="--i:0" role="status"><span class="status__text">Todos los días · 11:00 AM – 6:00 PM</span></p>
+        <span class="eyebrow" style="--i:1">Cocina marina peruana · Ancón</span>
+        <h1 id="titulo-principal" style="--i:2">Pepe <span>Cangrejo</span></h1>
+        <p class="hero__lead" style="--i:3">Especialistas en pulpa de cangrejo, ceviches y la pesca del día. Una experiencia culinaria donde los tesoros del océano cobran vida.</p>
+        <div class="hero__actions" style="--i:4">
+          <a href="#reservas" class="btn">Reservar mesa</a>
+          <a href="#carta" class="btn btn--light">Ver la carta</a>
+        </div>
+      </div>
+      <ul class="hero__info">
+        <li><svg class="i" aria-hidden="true"><use href="#i-map-pin"/></svg><span>2 de Mayo 601, Ancón</span></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span>Todos los días · 11:00 AM – 6:00 PM</span></li>
+        <li><svg class="i i--fill" aria-hidden="true"><use href="#i-whatsapp"/></svg><a href="https://wa.me/51957816255" target="_blank" rel="noopener" data-wa data-phone>+51 957 816 255</a></li>
+      </ul>
+    </section>
+
+    <!-- ============ VENTAJAS ============ -->
+    <section class="highlights" aria-labelledby="ventajas-titulo">
+      <h2 class="sr-only" id="ventajas-titulo">Por qué elegirnos</h2>
+      <div class="container highlights__grid">
+        <article class="highlight reveal">
+          <svg class="i" aria-hidden="true"><use href="#i-fish"/></svg>
+          <div><h3>Pesca del día</h3><p>Pescados y mariscos seleccionados cada mañana para la preparación del día.</p></div>
+        </article>
+        <article class="highlight reveal" style="--d:1">
+          <svg class="i" aria-hidden="true"><use href="#i-utensils"/></svg>
+          <div><h3>Especialistas en cangrejo</h3><p>Una línea completa de platos con pulpa de cangrejo: causas, chupes, tequeños y más.</p></div>
+        </article>
+        <article class="highlight reveal" style="--d:2">
+          <svg class="i" aria-hidden="true"><use href="#i-users"/></svg>
+          <div><h3>Tradición familiar</h3><p>Años de experiencia combinados con técnicas culinarias de vanguardia.</p></div>
+        </article>
+        <article class="highlight reveal" style="--d:3">
+          <svg class="i i--fill" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+          <div><h3>Pedidos por WhatsApp</h3><p>Reserva tu mesa o haz tu pedido en segundos, sin llamadas ni esperas.</p></div>
+        </article>
       </div>
     </section>
 
-    <section id="nosotros" class="section about">
+    <!-- ============ NOSOTROS ============ -->
+    <section id="nosotros" class="section about" aria-labelledby="nosotros-titulo">
       <div class="container about__grid">
         <div class="reveal">
-          <span class="eyebrow">Nuestra Historia</span>
-          <h2>Pasión por la <em>Comida Marina</em></h2>
+          <span class="eyebrow">Nuestra historia</span>
+          <h2 id="nosotros-titulo">Pasión por la <em>comida marina</em></h2>
           <p>Nacimos con un propósito claro: llevar a su mesa la esencia más pura del mar peruano. En <strong>Pepe Cangrejo</strong>, cada plato es una obra de arte, meticulosamente diseñada para deleitar los paladares más exigentes.</p>
           <p>Nuestra especialidad en pulpa de cangrejo y pesca del día refleja años de tradición familiar, combinados con técnicas culinarias de vanguardia. Un ambiente elegante, un servicio impecable y sabores que perduran en la memoria.</p>
-          <a href="#carta" class="link-arrow">Ver la carta <i class="fas fa-arrow-right"></i></a>
+          <a href="#carta" class="link-arrow">Ver la carta <svg class="i" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </div>
-        <div class="magazine reveal reveal-1">
-          <img class="mag-1" loading="lazy" width="800" height="600" alt="Plato gourmet de mariscos" src="https://images.unsplash.com/photo-1615719413546-198b25453f85?auto=format&fit=crop&w=800&q=80">
-          <div class="seal" aria-hidden="true"><i class="fas fa-anchor"></i><span>Cocina<br>Marina<br>Peruana</span></div>
-          <img class="mag-2" loading="lazy" width="600" height="800" alt="Chef preparando un plato" src="https://images.unsplash.com/photo-1579684947550-22e945225d9a?auto=format&fit=crop&w=600&q=80">
+        <div class="magazine reveal" style="--d:1">
+          <img class="mag-1" loading="lazy" decoding="async" width="800" height="600" alt="Plato de mariscos"
+               src="https://images.unsplash.com/photo-1615719413546-198b25453f85?auto=format&fit=crop&w=800&q=75"
+               srcset="https://images.unsplash.com/photo-1615719413546-198b25453f85?auto=format&fit=crop&w=500&q=75 500w,
+                       https://images.unsplash.com/photo-1615719413546-198b25453f85?auto=format&fit=crop&w=800&q=75 800w,
+                       https://images.unsplash.com/photo-1615719413546-198b25453f85?auto=format&fit=crop&w=1100&q=75 1100w"
+               sizes="(min-width: 1024px) 40vw, 90vw">
+          <img class="mag-2" loading="lazy" decoding="async" width="600" height="800" alt="Chef preparando un plato"
+               src="https://images.unsplash.com/photo-1579684947550-22e945225d9a?auto=format&fit=crop&w=600&q=75"
+               srcset="https://images.unsplash.com/photo-1579684947550-22e945225d9a?auto=format&fit=crop&w=400&q=75 400w,
+                       https://images.unsplash.com/photo-1579684947550-22e945225d9a?auto=format&fit=crop&w=600&q=75 600w,
+                       https://images.unsplash.com/photo-1579684947550-22e945225d9a?auto=format&fit=crop&w=900&q=75 900w"
+               sizes="(min-width: 1024px) 28vw, 60vw">
+          <div class="seal" aria-hidden="true"><svg class="i" aria-hidden="true"><use href="#i-anchor"/></svg><span>Cocina<br>marina<br>peruana</span></div>
         </div>
       </div>
     </section>
 
-    <section id="estrella" class="section signature">
+    <!-- ============ PLATOS ESTRELLA ============ -->
+    <!-- Los precios se leen de js/menu-data.js (data-dish = nombre exacto del plato). -->
+    <section id="estrella" class="section signature" aria-labelledby="estrella-titulo">
       <div class="container">
-        <div class="sec-head reveal"><span class="eyebrow">Especialidades de la casa</span><h2>Platos <em>Estrella</em></h2><div class="orn">◆</div></div>
+        <div class="section-head reveal">
+          <span class="eyebrow">Especialidades de la casa</span>
+          <h2 id="estrella-titulo">Platos <em>estrella</em></h2>
+          <div class="orn" aria-hidden="true"><i></i></div>
+        </div>
         <div class="dishes">
-          <article class="dish reveal"><span class="dish__n">01</span><h3>Causa de pulpa de cangrejo</h3><p>Nuestra especialidad: el clásico peruano con pulpa de cangrejo.</p><strong>S/ 45.00</strong></article>
-          <article class="dish reveal reveal-1"><span class="dish__n">02</span><h3>Ceviche Anconero</h3><p>Pescado y mariscos frescos, con el nombre de nuestra bahía.</p><strong>S/ 65.00</strong></article>
-          <article class="dish reveal reveal-2"><span class="dish__n">03</span><h3>Parihuela Pepe Cangrejo</h3><p>Sopa marinera contundente, para los amantes del mar.</p><strong>S/ 80.00</strong></article>
-          <article class="dish reveal reveal-2"><span class="dish__n">04</span><h3>Jalea Mixta</h3><p>Fritura crocante de mariscos, ideal para compartir.</p><strong>S/ 100.00</strong></article>
+          <article class="dish reveal" data-dish="Causa de pulpa de cangrejo"><h3>Causa de pulpa de cangrejo</h3><p>Nuestra especialidad: el clásico peruano con pulpa de cangrejo.</p><strong class="dish__price">S/ 45</strong></article>
+          <article class="dish reveal" style="--d:1" data-dish="Ceviche Anconero"><h3>Ceviche Anconero</h3><p>Pescado y mariscos frescos, con el nombre de nuestra bahía.</p><strong class="dish__price">S/ 65</strong></article>
+          <article class="dish reveal" style="--d:2" data-dish="Parihuela Pepe Cangrejo"><h3>Parihuela Pepe Cangrejo</h3><p>Sopa marinera contundente, para los amantes del mar.</p><strong class="dish__price">S/ 80</strong></article>
+          <article class="dish reveal" style="--d:3" data-dish="Jalea Mixta"><h3>Jalea Mixta</h3><p>Fritura crocante de mariscos, ideal para compartir.</p><strong class="dish__price">S/ 100</strong></article>
         </div>
-        <p class="center reveal"><a href="#carta" class="link-arrow">Ver la carta completa <i class="fas fa-arrow-right"></i></a></p>
+        <p class="signature__more reveal"><a href="#carta" class="link-arrow">Ver la carta completa <svg class="i" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
       </div>
     </section>
 
-    <section id="experiencia" class="section quote">
-      <div class="container reveal">
-        <i class="fas fa-anchor" aria-hidden="true"></i>
-        <blockquote>“El océano nos provee, nosotros lo transformamos en arte culinario.”</blockquote>
-        <p>El Chef Principal</p>
-      </div>
+    <!-- ============ CITA ============ -->
+    <section class="quote" aria-label="Filosofía de cocina">
+      <img class="quote__bg" alt="" loading="lazy" decoding="async" width="1600" height="1067"
+           src="https://images.unsplash.com/photo-1579684947550-22e945225d9a?auto=format&fit=crop&w=1400&q=60"
+           srcset="https://images.unsplash.com/photo-1579684947550-22e945225d9a?auto=format&fit=crop&w=800&q=60 800w,
+                   https://images.unsplash.com/photo-1579684947550-22e945225d9a?auto=format&fit=crop&w=1400&q=60 1400w"
+           sizes="100vw">
+      <figure class="container quote__inner reveal">
+        <svg class="i" aria-hidden="true"><use href="#i-anchor"/></svg>
+        <blockquote><p>“El océano nos provee, nosotros lo transformamos en arte culinario.”</p></blockquote>
+        <figcaption>El Chef Principal</figcaption>
+      </figure>
     </section>
 
-    <section id="carta" class="section menu">
-      <div class="container container--md">
-        <div class="menu__head reveal">
-          <span class="eyebrow">Menú Degustación</span>
-          <h2>La Carta</h2><div class="orn">◆</div>
+    <!-- ============ CARTA ============ -->
+    <!-- Se genera con js/carta.js a partir de js/menu-data.js -->
+    <section id="carta" class="section carta" aria-labelledby="carta-titulo">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Sabores del mar</span>
+          <h2 id="carta-titulo">La <em>Carta</em></h2>
+          <div class="orn" aria-hidden="true"><i></i></div>
+          <p>Precios en soles (S/). Los platos que dependen de la pesca del día pueden variar según disponibilidad.</p>
         </div>
+
         <div class="search reveal">
-          <i class="fas fa-search" aria-hidden="true"></i>
-          <input id="buscar" type="search" placeholder="Buscar en la carta: ceviche, cangrejo, pisco…" aria-label="Buscar en la carta" autocomplete="off">
+          <label class="sr-only" for="buscar">Buscar en la carta</label>
+          <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+          <input id="buscar" type="search" placeholder="Buscar: ceviche, cangrejo, pisco…" autocomplete="off" spellcheck="false" enterkeyhint="search">
+          <button class="search__clear" id="buscar-limpiar" type="button" aria-label="Borrar búsqueda" hidden><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
         </div>
-        <div id="tabs" class="tabs reveal reveal-1" aria-label="Índice de la carta"></div>
-        <div id="libro" class="book reveal reveal-2">
-          <div id="panels" class="panels" tabindex="0" aria-live="polite" aria-label="Carta. Usa las flechas del teclado para pasar de página"></div>
-          <div class="book__nav">
-            <button id="prev" class="nav-btn" aria-label="Página anterior"><i class="fas fa-chevron-left"></i></button>
-            <p id="pagina" class="book__count"></p>
-            <button id="next" class="nav-btn" aria-label="Página siguiente"><i class="fas fa-chevron-right"></i></button>
+        <p class="sr-only" id="buscar-estado" role="status" aria-live="polite"></p>
+
+        <div id="carta-app" class="carta__app">
+          <div class="tabs"><div class="tabs__list" id="tabs" role="tablist" aria-label="Categorías de la carta"></div></div>
+          <div class="panel" id="panel" role="tabpanel" tabindex="0" aria-live="polite"></div>
+          <div class="pager">
+            <button class="pager__btn" id="prev" type="button"><svg class="i" aria-hidden="true"><use href="#i-chevron-left"/></svg><span class="pager__label">Anterior</span></button>
+            <p class="pager__count" id="pager-count"></p>
+            <button class="pager__btn pager__btn--next" id="next" type="button"><span class="pager__label">Siguiente</span><svg class="i" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+            <div class="pager__bar" aria-hidden="true"><span id="pager-bar"></span></div>
           </div>
-          <div class="book__bar" aria-hidden="true"><span id="progreso"></span></div>
         </div>
+
         <div id="resultados" class="results" hidden></div>
-        <p id="sin-resultados" class="empty" hidden>No encontramos platos con esa búsqueda. Prueba con otra palabra.</p>
-        <div class="menu__cta reveal">
-          <a class="btn btn--solid" target="_blank" rel="noopener" href="https://wa.me/51957816255?text=Hola%20Pepe%20Cangrejo,%20quisiera%20hacer%20un%20pedido">Realizar Pedido Online</a>
+        <div id="sin-resultados" class="empty" hidden>
+          <p>No encontramos platos con esa búsqueda. Prueba con otra palabra.</p>
+          <p><a class="link-arrow" data-wa="Hola Pepe Cangrejo, quisiera consultar por un plato" target="_blank" rel="noopener" href="https://wa.me/51957816255?text=Hola%20Pepe%20Cangrejo%2C%20quisiera%20consultar%20por%20un%20plato">Consúltanos por WhatsApp <svg class="i" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
+        </div>
+        <noscript><p class="empty">Para ver la carta necesitas activar JavaScript. También puedes <a class="link-arrow" href="https://wa.me/51957816255?text=Hola%20Pepe%20Cangrejo%2C%20quisiera%20ver%20la%20carta" target="_blank" rel="noopener">pedirla por WhatsApp</a>.</p></noscript>
+
+        <div class="carta__cta reveal">
+          <a class="btn" data-wa="Hola Pepe Cangrejo, quisiera hacer un pedido" target="_blank" rel="noopener" href="https://wa.me/51957816255?text=Hola%20Pepe%20Cangrejo%2C%20quisiera%20hacer%20un%20pedido">
+            <svg class="i i--fill" aria-hidden="true"><use href="#i-whatsapp"/></svg> Realizar pedido por WhatsApp
+          </a>
         </div>
       </div>
     </section>
 
-    <section id="reservas" class="section booking">
-      <div class="container booking__inner reveal">
-        <span class="eyebrow">Reservas</span>
-        <h2>Reserva tu <em>mesa</em></h2><div class="orn">◆</div>
-        <p class="booking__lead">Completa los datos y te llevamos a WhatsApp con el mensaje listo para enviar. Confirmamos tu reserva por ese mismo chat.</p>
-        <form id="reserva-form" class="form">
-          <label>Nombre<input name="nombre" required autocomplete="name" placeholder="Tu nombre"></label>
-          <label>Personas<select name="personas" required><option>1</option><option>2</option><option selected>4</option><option>6</option><option>8</option><option>10 o más</option></select></label>
-          <label>Fecha<input name="fecha" type="date" required></label>
-          <label>Hora<input name="hora" type="time" required min="11:00" max="17:30" value="13:00"></label>
-          <label class="full">Comentarios (opcional)<textarea name="notas" rows="3" placeholder="Celebración, alergias, preferencia de mesa…"></textarea></label>
-          <button class="btn btn--solid full" type="submit"><i class="fab fa-whatsapp"></i> Enviar reserva por WhatsApp</button>
+    <!-- ============ RESERVAS ============ -->
+    <section id="reservas" class="section booking" aria-labelledby="reservas-titulo">
+      <div class="container booking__grid">
+        <div class="booking__intro reveal">
+          <span class="eyebrow">Reservas</span>
+          <h2 id="reservas-titulo">Reserva tu <em>mesa</em></h2>
+          <p class="booking__lead">Completa los datos y te llevamos a WhatsApp con el mensaje listo para enviar. Confirmamos tu reserva por ese mismo chat.</p>
+          <ol class="steps">
+            <li><div><strong>Elige día y hora</strong><span>Atendemos todos los días, de 11:00 AM a 6:00 PM.</span></div></li>
+            <li><div><strong>Envía el mensaje</strong><span>Se abre WhatsApp con tu reserva ya escrita: solo tienes que enviarla.</span></div></li>
+            <li><div><strong>Recibe la confirmación</strong><span>Tu mesa queda confirmada cuando te respondemos en ese chat.</span></div></li>
+          </ol>
+          <p class="status"><span class="status__text">Todos los días · 11:00 AM – 6:00 PM</span></p>
+        </div>
+
+        <form id="reserva-form" class="form reveal" style="--d:1">
+          <div class="field">
+            <label for="r-nombre">Nombre</label>
+            <input id="r-nombre" name="nombre" type="text" required minlength="2" maxlength="60" autocomplete="name" placeholder="Tu nombre">
+          </div>
+          <div class="form__row">
+            <div class="field">
+              <label for="r-personas">Personas</label>
+              <select id="r-personas" name="personas" required>
+                <option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option>
+                <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                <option value="Más de 10">Más de 10</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="r-fecha">Fecha</label>
+              <input id="r-fecha" name="fecha" type="date" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="r-hora">Hora</label>
+            <select id="r-hora" name="hora" required></select>
+          </div>
+          <div class="field">
+            <label for="r-notas">Comentarios (opcional)</label>
+            <textarea id="r-notas" name="notas" rows="3" maxlength="300" placeholder="Celebración, alergias, preferencia de mesa…"></textarea>
+          </div>
+          <button class="btn" type="submit"><svg class="i i--fill" aria-hidden="true"><use href="#i-whatsapp"/></svg> Enviar reserva por WhatsApp</button>
+          <p class="form__msg" id="reserva-msg" role="status" aria-live="polite" hidden></p>
         </form>
       </div>
     </section>
 
-    <section id="contacto" class="section contact">
+    <!-- ============ CONTACTO ============ -->
+    <section id="contacto" class="section contact" aria-labelledby="contacto-titulo">
       <div class="container">
-        <div class="sec-head reveal"><span class="eyebrow">Visítenos</span><h2>Contacto &amp; <em>Ubicación</em></h2><div class="orn">◆</div></div>
-        <div class="cards">
-          <article class="card reveal"><span class="icon"><i class="fas fa-map-marker-alt"></i></span><h3>Dirección</h3><p>2 de Mayo 601<br>Ancón 15123, Lima, Perú</p><a class="card__link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2+de+Mayo+601+Ancon+15123+Lima+Peru">Cómo llegar <i class="fas fa-arrow-right"></i></a></article>
-          <article class="card reveal reveal-1"><span class="icon"><i class="fab fa-whatsapp"></i></span><h3>Reservas y Pedidos</h3><p>Atención directa por WhatsApp</p><a class="phone" href="https://wa.me/51957816255" target="_blank" rel="noopener">+51 957 816 255</a><a class="card__link" href="#reservas">Reservar mesa <i class="fas fa-arrow-right"></i></a></article>
-          <article class="card reveal reveal-2"><span class="icon"><i class="fas fa-clock"></i></span><h3>Horario de Atención</h3><p>Lunes a Domingo<br>11:00 AM - 6:00 PM</p><p class="status"><span></span></p></article>
+        <div class="section-head reveal">
+          <span class="eyebrow">Visítenos</span>
+          <h2 id="contacto-titulo">Contacto y <em>ubicación</em></h2>
+          <div class="orn" aria-hidden="true"><i></i></div>
         </div>
+        <div class="cards">
+          <article class="card reveal">
+            <span class="card__icon"><svg class="i" aria-hidden="true"><use href="#i-map-pin"/></svg></span>
+            <h3>Dirección</h3>
+            <p>2 de Mayo 601<br>Ancón 15123, Lima, Perú</p>
+            <a class="link-arrow" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2+de+Mayo+601+Ancon+15123+Lima+Peru">Cómo llegar <svg class="i" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+          </article>
+          <article class="card reveal" style="--d:1">
+            <span class="card__icon"><svg class="i i--fill" aria-hidden="true"><use href="#i-whatsapp"/></svg></span>
+            <h3>Reservas y pedidos</h3>
+            <p>Atención directa por WhatsApp</p>
+            <a class="card__phone" href="https://wa.me/51957816255" target="_blank" rel="noopener" data-wa data-phone>+51 957 816 255</a>
+            <a class="link-arrow" href="#reservas">Reservar mesa <svg class="i" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+          </article>
+          <article class="card reveal" style="--d:2">
+            <span class="card__icon"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span>
+            <h3>Horario de atención</h3>
+            <p>Lunes a domingo<br>11:00 AM – 6:00 PM</p>
+            <p class="status"><span class="status__text">Todos los días · 11:00 AM – 6:00 PM</span></p>
+          </article>
+        </div>
+
         <div class="map reveal">
-          <iframe title="Mapa de Pepe Cangrejo en Ancón" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=2%20de%20Mayo%20601%2C%20Anc%C3%B3n%2015123%2C%20Lima%2C%20Peru&z=16&output=embed"></iframe>
-          <a class="map__btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2+de+Mayo+601+Ancon+15123+Lima+Peru"><i class="fas fa-location-dot"></i> Abrir en Google Maps</a>
+          <div class="map__stage" id="map-stage" data-src="https://www.google.com/maps?q=2%20de%20Mayo%20601%2C%20Anc%C3%B3n%2015123%2C%20Lima%2C%20Peru&z=16&output=embed">
+            <div class="map__facade">
+              <svg class="i" aria-hidden="true"><use href="#i-map-pin"/></svg>
+              <p>2 de Mayo 601, Ancón</p>
+              <div class="map__actions">
+                <button class="btn btn--sm" id="map-load" type="button">Ver mapa aquí</button>
+                <a class="btn btn--sm btn--outline" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2+de+Mayo+601+Ancon+15123+Lima+Peru">Abrir en Google Maps</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- ============ PIE ============ -->
   <footer class="footer">
     <div class="container">
       <div class="footer__grid">
-        <div><a href="#inicio" class="logo logo--lg">Pepe <span>Cangrejo</span></a><p class="footer__tag">Tradición y sabor del mar peruano, en Ancón.</p>
-          <div class="social"><a href="https://www.facebook.com/restaurantepepecangrejo/?locale=es_LA" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Pepe Cangrejo"><i class="fab fa-facebook-f"></i></a><a href="https://www.instagram.com/pepecangrejoperu/?hl=es" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Pepe Cangrejo"><i class="fab fa-instagram"></i></a><a href="https://www.tiktok.com/@pepecangrejoperu" target="_blank" rel="noopener noreferrer" aria-label="TikTok de Pepe Cangrejo"><i class="fab fa-tiktok"></i></a></div></div>
-        <div><h4>Explorar</h4><ul><li><a href="#nosotros">Nosotros</a></li><li><a href="#carta">La Carta</a></li><li><a href="#reservas">Reservas</a></li><li><a href="#contacto">Contacto</a></li></ul></div>
-        <div><h4>Visítenos</h4><ul><li>2 de Mayo 601, Ancón<br>Lima, Perú</li><li>Lun - Dom · 11:00 AM - 6:00 PM</li><li><a href="https://wa.me/51957816255" target="_blank" rel="noopener">+51 957 816 255</a></li></ul></div>
+        <div>
+          <a href="#inicio" class="logo logo--lg">Pepe <span>Cangrejo</span></a>
+          <p class="footer__tag">Tradición y sabor del mar peruano, en Ancón.</p>
+          <div class="social">
+            <a href="https://www.facebook.com/restaurantepepecangrejo/?locale=es_LA" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Pepe Cangrejo"><svg class="i i--fill" aria-hidden="true"><use href="#i-facebook"/></svg></a>
+            <a href="https://www.instagram.com/pepecangrejoperu/?hl=es" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Pepe Cangrejo"><svg class="i i--fill" aria-hidden="true"><use href="#i-instagram"/></svg></a>
+            <a href="https://www.tiktok.com/@pepecangrejoperu" target="_blank" rel="noopener noreferrer" aria-label="TikTok de Pepe Cangrejo"><svg class="i i--fill" aria-hidden="true"><use href="#i-tiktok"/></svg></a>
+          </div>
+        </div>
+        <nav aria-label="Pie de página">
+          <h4>Explorar</h4>
+          <ul>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#carta">La Carta</a></li>
+            <li><a href="#reservas">Reservas</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h4>Visítenos</h4>
+          <ul>
+            <li>2 de Mayo 601, Ancón<br>Lima, Perú</li>
+            <li>Lun – Dom · 11:00 AM – 6:00 PM</li>
+            <li><a href="https://wa.me/51957816255" target="_blank" rel="noopener" data-wa data-phone>+51 957 816 255</a></li>
+          </ul>
+        </div>
       </div>
       <div class="footer__bottom">
         <p>&copy; <span id="year">2026</span> Pepe Cangrejo Restaurante. Todos los derechos reservados.</p>
-        <p><a href="terminos.html">Términos y Condiciones</a> | <a href="privacidad.html">Política de Privacidad</a></p>
+        <p><a href="terminos.html">Términos y Condiciones</a> <span aria-hidden="true">|</span> <a href="privacidad.html">Política de Privacidad</a></p>
       </div>
     </div>
   </footer>
 
-  <button id="top" class="top" aria-label="Volver arriba" hidden><i class="fas fa-chevron-up"></i></button>
+  <!-- Barra de acciones en móvil -->
+  <nav class="dock" id="dock" aria-label="Acciones rápidas">
+    <a href="#reservas"><svg class="i" aria-hidden="true"><use href="#i-calendar-days"/></svg><span>Reservar</span></a>
+    <a data-wa="Hola Pepe Cangrejo, quisiera hacer un pedido" target="_blank" rel="noopener" href="https://wa.me/51957816255?text=Hola%20Pepe%20Cangrejo%2C%20quisiera%20hacer%20un%20pedido"><svg class="i i--fill" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>Pedir</span></a>
+    <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2+de+Mayo+601+Ancon+15123+Lima+Peru"><svg class="i" aria-hidden="true"><use href="#i-navigation"/></svg><span>Cómo llegar</span></a>
+  </nav>
 
-  <a class="wsp" target="_blank" rel="noopener" aria-label="Haz tu pedido por WhatsApp" href="https://wa.me/51957816255?text=Hola%20Pepe%20Cangrejo,%20quisiera%20hacer%20un%20pedido."><i class="fab fa-whatsapp"></i></a>
+  <!-- Botones flotantes en escritorio -->
+  <aside aria-label="Accesos rápidos">
+    <a class="fab" data-wa="Hola Pepe Cangrejo, quisiera hacer un pedido" target="_blank" rel="noopener" aria-label="Haz tu pedido por WhatsApp" href="https://wa.me/51957816255?text=Hola%20Pepe%20Cangrejo%2C%20quisiera%20hacer%20un%20pedido"><svg class="i i--fill" aria-hidden="true"><use href="#i-whatsapp"/></svg></a>
+    <button class="to-top" id="to-top" type="button" aria-label="Volver arriba" hidden><svg class="i" aria-hidden="true"><use href="#i-chevron-up"/></svg></button>
+  </aside>
 
-  <script src="js/config.js"></script>
-  <script src="js/menu-data.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/extras.js"></script>
+  <script src="js/config.js" defer></script>
+  <script src="js/menu-data.js" defer></script>
+  <script src="js/carta.js" defer></script>
+  <script src="js/main.js" defer></script>
+
+  <!-- Iconos (sprite SVG): se usan con <svg class="i"><use href="#i-nombre"/></svg> -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16"/> <path d="M4 12h16"/> <path d="M4 19h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/> <path d="m6 6 12 12"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/> <path d="M19 12H5"/></symbol>
+    <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/> <circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/> <path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol>
+    <symbol id="i-fish" viewBox="0 0 24 24"><path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z"/> <path d="M18 12v.5"/> <path d="M16 17.93a9.77 9.77 0 0 1 0-11.86"/> <path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33"/> <path d="M10.46 7.26C10.2 5.88 9.17 4.24 8 3h5.8a2 2 0 0 1 1.98 1.67l.23 1.4"/> <path d="m16.01 17.93-.23 1.4A2 2 0 0 1 13.8 21H9.5a5.96 5.96 0 0 0 1.49-3.98"/></symbol>
+    <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/> <path d="M7 2v20"/> <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/> <path d="M16 3.128a4 4 0 0 1 0 7.744"/> <path d="M22 21v-2a4 4 0 0 0-3-3.87"/> <circle cx="9" cy="7" r="4"/></symbol>
+    <symbol id="i-anchor" viewBox="0 0 24 24"><path d="M12 6v16"/> <path d="m19 13 2-1a9 9 0 0 1-18 0l2 1"/> <path d="M9 11h6"/> <circle cx="12" cy="4" r="2"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></symbol>
+    <symbol id="i-calendar-days" viewBox="0 0 24 24"><path d="M8 2v3"/> <path d="M16 2v3"/> <rect x="3" y="3" width="18" height="18" rx="2"/> <path d="M3 9h18"/> <path d="M8 13h.01"/> <path d="M12 13h.01"/> <path d="M16 13h.01"/> <path d="M8 17h.01"/> <path d="M12 17h.01"/> <path d="M16 17h.01"/></symbol>
+    <symbol id="i-navigation" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></symbol>
+    <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></symbol>
+  </svg>
 </body>
 </html>
